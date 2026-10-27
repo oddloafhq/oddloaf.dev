@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OwnFlick – Self-hosted, TikTok-style browsing for your local videos</title>
+<meta name="description" content="OwnFlick is a free, open-source app that turns your own video and photo library into a vertical, swipeable feed. Runs locally, no cloud, no tracking.">
+<link rel="canonical" href="https://oddloaf.dev/ownflick/">
+<meta name="theme-color" content="#F4F1EA">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Oddloaf">
+<meta property="og:url" content="https://oddloaf.dev/ownflick/">
+<meta property="og:title" content="OwnFlick – Self-hosted, TikTok-style browsing for your local videos">
+<meta property="og:description" content="OwnFlick is a free, open-source app that turns your own video and photo library into a vertical, swipeable feed. Runs locally, no cloud, no tracking.">
+<meta property="og:image" content="https://oddloaf.dev/og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@oddloafhq">
+<meta name="twitter:title" content="OwnFlick – Self-hosted, TikTok-style browsing for your local videos">
+<meta name="twitter:description" content="OwnFlick is a free, open-source app that turns your own video and photo library into a vertical, swipeable feed. Runs locally, no cloud, no tracking.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/geist-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "OwnFlick", "description": "OwnFlick is a free, open-source app that turns your own video and photo library into a vertical, swipeable feed. Runs locally, no cloud, no tracking.", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any system with Python 3.10+ or Docker", "url": "https://github.com/oddloafhq/ownflick", "mainEntityOfPage": "https://oddloaf.dev/ownflick/", "image": "https://oddloaf.dev/og.png", "screenshot": "https://oddloaf.dev/ownflick/ownflick-hero.webp", "publisher": {"@type": "Organization", "name": "Oddloaf", "url": "https://oddloaf.dev/"}, "license": "https://opensource.org/licenses/MIT", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "VideoObject", "name": "OwnFlick demo", "description": "A 24-second demo of OwnFlick: swipe through your own videos and photos in Flow, browse the Library, and open Home on a phone.", "thumbnailUrl": ["https://oddloaf.dev/ownflick/ownflick-demo-poster.webp"], "uploadDate": "2026-10-14T15:23:15+08:00", "duration": "PT24S", "contentUrl": "https://oddloaf.dev/ownflick/ownflick-demo.mp4", "embedUrl": "https://oddloaf.dev/ownflick/", "width": 1280, "height": 720, "publisher": {"@type": "Organization", "name": "Oddloaf", "url": "https://oddloaf.dev/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is OwnFlick free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. OwnFlick is free and open source under the MIT license."}}, {"@type": "Question", "name": "Does my media leave my machine?", "acceptedAnswer": {"@type": "Answer", "text": "No. Browsing and playback stay on your own server, and local browsing works without internet access. Only optional AI features, which are off unless you configure them, send selected images to the provider you choose."}}, {"@type": "Question", "name": "How do I install it?", "acceptedAnswer": {"@type": "Answer", "text": "With Python 3.10 or later, run pip install ownflick, then ownflick ~/Videos. A Docker image for amd64 and arm64 is also available at ghcr.io/oddloafhq/ownflick."}}, {"@type": "Question", "name": "Which file formats work?", "acceptedAnswer": {"@type": "Answer", "text": "OwnFlick mixes videos and images in one feed, and plays whatever your browser can play. Files the browser can't play, such as some HEVC or AV1 videos, are skipped with a short note instead of stopping the feed."}}, {"@type": "Question", "name": "Can I use it on my phone over LAN?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Open http://<your-computer>:8000 on any phone, tablet or browser on the same network. The first start prints an access password in the terminal."}}]}</script>
+<style>
+@font-face{font-family:"Instrument Serif";src:url("/fonts/instrument-serif-latin-400-normal.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Instrument Serif";src:url("/fonts/instrument-serif-latin-400-italic.woff2") format("woff2");font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:"Geist Mono";src:url("/fonts/geist-mono-latin-400-normal.woff2") format("woff2");font-weight:400;font-display:swap}
+:root{--paper:#F4F1EA;--ink:#141414;--mid:#6a6761;--soft:#4a4844;--line:rgba(20,20,20,.07);--rule:rgba(20,20,20,.16);
+  --serif:"Instrument Serif","Cormorant Garamond","Didot","Times New Roman",serif;--mono:"Geist Mono","SF Mono",ui-monospace,Menlo,Consolas,monospace;--pad:clamp(20px,3.2vw,48px)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;scroll-behavior:smooth}
+body{position:relative;background:var(--paper);font-family:var(--mono);font-size:12.5px;letter-spacing:.01em;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--ink);color:var(--paper)}
+:focus-visible{outline:1px solid currentColor;outline-offset:4px}
+.guides{position:fixed;inset:0 var(--pad);pointer-events:none;z-index:0;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.guides::before{content:"";position:absolute;top:0;bottom:0;left:calc(100%/12*2);border-left:1px solid var(--line)}
+.grain{position:absolute;inset:0;pointer-events:none;z-index:5;opacity:.045;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 9s steps(6) infinite}
+@keyframes grain{0%,100%{background-position:0 0}20%{background-position:-41px 27px}40%{background-position:33px -52px}60%{background-position:-19px -13px}80%{background-position:47px 38px}}
+header,main,footer{position:relative;z-index:2}
+header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:var(--pad);z-index:6;mix-blend-mode:difference;color:var(--paper)}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:24px;line-height:1;letter-spacing:-.01em}
+.brand svg{width:28px;height:20px;display:block;transform:translateY(-1px)}
+header nav{display:flex;gap:26px;text-transform:uppercase;letter-spacing:.08em;font-size:11.5px}
+header nav a{position:relative}
+header nav a::after{content:"";position:absolute;left:0;right:100%;bottom:-4px;height:1px;background:currentColor;transition:right .9s cubic-bezier(.2,.7,0,1)}
+header nav a:hover::after{right:0}
+
+.wrap{display:grid;grid-template-columns:repeat(12,1fr);padding:0 var(--pad)}
+.intro{padding-top:calc(var(--pad) + 17vh);padding-bottom:7vh;row-gap:0}
+.crumb{grid-column:1/3;color:var(--mid);padding-top:14px}
+.crumb a{border-bottom:1px solid var(--rule)}
+.crumb a:hover{border-color:var(--ink)}
+h1.pname{grid-column:3/13;font-family:var(--serif);font-weight:400;font-size:clamp(72px,13vw,210px);line-height:.86;letter-spacing:-.035em}
+h1.pname em{font-style:italic}
+.tag{grid-column:3/10;margin-top:28px;font-family:var(--serif);font-size:clamp(22px,2.3vw,34px);line-height:1.2;color:#2a2a28}
+.cta{grid-column:3/13;margin-top:34px;display:flex;flex-wrap:wrap;gap:14px 34px;align-items:baseline}
+.cta .go{font-size:13px;color:var(--ink);padding-bottom:3px;background:linear-gradient(currentColor,currentColor) 0 100%/100% 1px no-repeat;transition:background-size .9s cubic-bezier(.2,.7,0,1)}
+.cta .go:hover{background-size:0 1px;background-position:100% 100%}
+.state{text-transform:uppercase;letter-spacing:.08em;font-size:11.5px}
+.state i{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:8px;vertical-align:1px;border:1px solid var(--ink)}
+.state.on i{background:var(--ink)}
+.state.soon i{background:linear-gradient(90deg,var(--ink) 50%,transparent 50%)}
+.snote{color:var(--mid)}
+
+.shot{grid-column:1/13;margin:0;padding-bottom:3vh}
+.shot .frame{position:relative;aspect-ratio:16/9;background:#141414;overflow:hidden}
+.shot img{display:block;width:100%;height:100%;object-fit:contain;filter:grayscale(1) contrast(1.04)}
+.shot figcaption{margin-top:10px;color:var(--mid);display:flex;justify-content:space-between}
+
+.facts{grid-column:1/13;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ink);margin-top:6vh}
+.facts div{padding:16px 18px 18px 0;border-bottom:1px solid var(--rule)}
+.facts dt{color:var(--mid);margin-bottom:6px}
+.facts dd{color:var(--ink)}
+.code{grid-column:1/13;margin-top:4vh;display:flex;gap:24px;align-items:baseline}
+.code .k{color:var(--mid);min-width:calc((100% - 0px)/12*2)}
+.code pre{font:inherit;font-size:13px;line-height:1.8;color:var(--ink);white-space:pre-wrap}
+
+section.blk{padding-top:11vh}
+.idx{grid-column:1/3;color:var(--mid);padding-top:8px}
+h2.h{grid-column:3/13;font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.4vw,50px);line-height:1.05;letter-spacing:-.01em;margin-bottom:5vh}
+h2.h em{font-style:italic}
+.feats{grid-column:1/13;list-style:none;display:grid;grid-template-columns:repeat(4,1fr);column-gap:28px;border-top:1px solid var(--ink)}
+.feats li{padding:22px 0 8px}
+.feats .n{color:var(--mid);display:block;margin-bottom:22px}
+.feats h3{font-family:var(--serif);font-weight:400;font-size:clamp(22px,1.9vw,28px);line-height:1.1;margin-bottom:12px}
+.feats p{color:var(--soft);max-width:34ch}
+
+.faq{grid-column:3/13;border-top:1px solid var(--ink)}
+.faq details{border-bottom:1px solid var(--rule)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:24px;align-items:baseline;padding:20px 0;font-family:var(--serif);font-size:clamp(20px,1.8vw,26px);line-height:1.2}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--mono);font-size:14px;color:var(--mid);transition:transform .5s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq .a{padding:0 0 22px;color:var(--soft);max-width:68ch}
+.faq .a code{font:inherit;color:var(--ink);background:rgba(20,20,20,.06);padding:1px 5px}
+
+.next{grid-column:1/13;margin-top:13vh;padding:28px 0;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:baseline;gap:20px}
+.next a{font-family:var(--serif);font-size:clamp(28px,3vw,44px);line-height:1}
+.next a span{transition:transform 1s cubic-bezier(.2,.7,0,1);display:inline-block}
+.next a:hover span{transform:translateX(12px)}
+.next small{color:var(--mid)}
+
+footer{display:grid;grid-template-columns:repeat(12,1fr);align-items:end;padding:6.5vh var(--pad) var(--pad);border-top:1px solid var(--line);color:var(--mid);row-gap:28px}
+footer .hello{grid-column:1/9;font-family:var(--serif);color:var(--ink);font-size:clamp(34px,5vw,76px);line-height:1;letter-spacing:-.02em}
+footer .hello small{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.01em;color:var(--mid);margin-bottom:16px}
+footer .hello small .copied{color:var(--ink);opacity:0;transition:opacity .4s;margin-left:8px}
+footer .hello small .copied.on{opacity:1}
+footer .hello a{font-style:italic;background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size 1s cubic-bezier(.2,.7,0,1);cursor:copy}
+footer .hello a:hover{background-size:100% 1px}
+footer .links{grid-column:9/13;display:flex;justify-content:flex-end;gap:24px;color:var(--ink)}
+footer .links a{opacity:.75;transition:opacity .5s}
+footer .links a:hover{opacity:1}
+footer .base{grid-column:1/13;display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:var(--pad)}
+
+.reveal{opacity:0;transform:translateY(14px);transition:opacity 1.4s ease,transform 1.4s cubic-bezier(.2,.7,0,1)}
+.reveal.in{opacity:1;transform:none}
+@media (max-width:760px){
+  body{font-size:13px}
+  .guides::before{display:none}
+  header nav{gap:16px}
+  .brand{font-size:22px}
+  .wrap{grid-template-columns:repeat(4,1fr)}
+  .intro{padding-top:calc(var(--pad) + 74px);padding-bottom:5vh}
+  .crumb{grid-column:1/5;padding:0 0 18px}
+  h1.pname{grid-column:1/5;font-size:clamp(56px,19vw,96px)}
+  .tag{grid-column:1/5;margin-top:18px;font-size:22px}
+  .cta{grid-column:1/5;margin-top:24px;flex-direction:column;gap:10px}
+  .shot{grid-column:1/5}
+  .shot .frame{aspect-ratio:4/3}
+  .facts{grid-column:1/5;grid-template-columns:1fr 1fr;margin-top:4vh}
+  .code{grid-column:1/5;flex-direction:column;gap:8px}
+  section.blk{padding-top:8vh}
+  .idx{grid-column:1/5;margin-bottom:12px}
+  h2.h{grid-column:1/5;margin-bottom:4vh}
+  .feats{grid-column:1/5;grid-template-columns:1fr}
+  .feats li{border-bottom:1px solid var(--rule);padding:18px 0}
+  .feats .n{margin-bottom:8px}
+  .faq{grid-column:1/5}
+  .next{grid-column:1/5;flex-direction:column;margin-top:9vh}
+  footer{grid-template-columns:repeat(4,1fr)}
+  footer .hello{grid-column:1/5;font-size:11vw}
+  footer .links{grid-column:1/5;justify-content:flex-start}
+  footer .base{grid-column:1/5}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.reveal{opacity:1;transform:none}}
+.shot.real img{filter:none;height:auto}
+.shot.real .frame,.shot.real .frame.tall{aspect-ratio:auto;background:transparent}
+.shot.vid .frame{aspect-ratio:16/9}
+.shot .frame.tall{aspect-ratio:16/10}
+.shot video{display:block;width:100%;height:100%;object-fit:cover;background:#141414}
+.brandrow{grid-column:1/13;margin:0 0 18px}.brandrow img{display:block;height:40px;width:auto}
+.phones{grid-column:1/13;max-width:860px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding-bottom:3vh}
+.phones figure{margin:0}.phones img{display:block;width:100%;height:auto;background:#141414}
+.phones figcaption{margin-top:10px;color:var(--mid)}
+@media (max-width:760px){.brandrow,.phones{grid-column:1/5}.phones{gap:8px}}
+.ssvid{grid-column:1/13;margin:0;max-width:360px;padding-bottom:3vh}.vframe{aspect-ratio:9/16;background:#141414;overflow:hidden}.ssvid video{display:block;width:100%;height:100%;object-fit:cover}.ssvid figcaption{margin-top:10px;color:var(--mid);display:flex;justify-content:space-between}
+@media (max-width:760px){.ssvid{grid-column:1/5;max-width:100%}}
+.sslede{grid-column:1/9;margin:0 0 28px;color:var(--mid);max-width:56ch}@media (max-width:760px){.sslede{grid-column:1/5}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoObject","name":"Find related videos and search by description with EmbeddingGemma","description":"OwnFlick's optional semantic search: describe a clip or open one to find related videos in your library.","thumbnailUrl":["https://oddloaf.dev/ownflick/ownflick-semantic-search-poster.webp"],"uploadDate":"2026-10-14","duration":"PT18S","width":720,"height":1280,"contentSize":"1818034","contentUrl":"https://oddloaf.dev/ownflick/ownflick-semantic-search.mp4","embedUrl":"https://oddloaf.dev/ownflick/#semantic-search","publisher":{"@type":"Organization","name":"Oddloaf","url":"https://oddloaf.dev/"}}</script>
+
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <mask id="cuts" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <rect width="512" height="512" fill="#fff"/>
+      <g transform="translate(256 256) scale(1.14) translate(-256 -258)" fill="#000">
+        <path d="M226,135 L250,135 C204,185 175.2,219 156.2,253 C143.2,223 174,181 226,135 Z"/>
+        <path d="M296,128 L320,128 C274,178 245.2,212 226.2,246 C213.2,216 244,174 296,128 Z"/>
+        <path d="M366,138 L390,138 C344,188 315.2,222 296.2,256 C283.2,226 314,184 366,138 Z"/>
+      </g>
+    </mask>
+    <symbol id="loaf" viewBox="40 130 432 250">
+      <g mask="url(#cuts)"><g transform="translate(256 256) scale(1.14) translate(-256 -258)"><path fill="currentColor" d="M156,352 C100,352 78,326 78,286 C78,218 150,172 238,164 C324,156 402,182 426,240 C442,280 440,326 418,342 C404,352 384,352 362,352 Z"/></g></g>
+    </symbol>
+  </defs>
+</svg>
+<div class="guides" aria-hidden="true"></div>
+<header>
+  <a class="brand" href="/" aria-label="Oddloaf, home"><svg aria-hidden="true"><use href="#loaf"/></svg><span>Oddloaf</span></a>
+  <nav aria-label="Site"><a href="/#batches">Batches</a><a href="/#about">About</a><a href="#hello">Hello</a></nav>
+</header>
+
+<main id="top">
+  <section class="wrap intro" aria-labelledby="pn">
+    <p class="crumb"><a href="/#batches">Batches</a> / 03</p>
+    <h1 class="pname" id="pn">OwnFlick</h1>
+    <p class="tag">Your own swipeable feed for the videos and photos you already have. Self-hosted, no cloud account.</p>
+    <div class="cta">
+      <a class="go" href="https://github.com/oddloafhq/ownflick" target="_blank" rel="noopener">github.com/oddloafhq/ownflick ↗</a>
+      <span class="state on"><i></i>Served</span>
+      <span class="snote">Formerly Spooly. Open source, MIT licensed. Install from PyPI or Docker.</span>
+    </div>
+  </section>
+
+  <section class="wrap" aria-label="Preview">
+    <p class="brandrow reveal"><img src="/ownflick/ownflick-lockup.svg" alt="OwnFlick logo" width="156" height="48" decoding="async"></p>
+    <figure class="shot real reveal">
+      <div class="frame"><img src="/ownflick/ownflick-hero.webp" alt="OwnFlick Library grid on desktop next to the Flow swipe feed on a phone" width="1600" height="900" decoding="async" fetchpriority="high"></div>
+      <figcaption><span>OwnFlick — Library on desktop, Flow on a phone</span><span>v0.8 screenshot</span></figcaption>
+    </figure>
+    <figure class="shot real vid reveal">
+      <div class="frame"><video src="/ownflick/ownflick-demo.mp4" poster="/ownflick/ownflick-demo-poster.webp" width="1280" height="720" muted loop playsinline autoplay preload="none" aria-label="24-second OwnFlick demo: swiping through Flow, browsing the Library and Home on a phone"></video></div>
+      <figcaption><span>24-second demo</span><span>muted · loops</span></figcaption>
+    </figure>
+    <div class="phones reveal">
+      <figure><img src="/ownflick/ownflick-flow-mobile.webp" alt="Flow: a full-screen waterfall video with speed, search, like, save and info actions" width="540" height="1169" loading="lazy" decoding="async"><figcaption>Flow</figcaption></figure>
+      <figure><img src="/ownflick/ownflick-home-mobile.webp" alt="Home on a phone: a collage of recent photos with entry points to Flow and Radio" width="540" height="1169" loading="lazy" decoding="async"><figcaption>Home</figcaption></figure>
+      <figure><img src="/ownflick/ownflick-library-mobile.webp" alt="Library on a phone: a two-column grid of landscape and city photos" width="540" height="1169" loading="lazy" decoding="async"><figcaption>Library</figcaption></figure>
+    </div>
+    <figure class="shot real reveal">
+      <div class="frame tall"><img src="/ownflick/ownflick-home-desktop.webp" alt="OwnFlick Home on desktop with Flow and Radio entry cards and a Recently Added row" width="1600" height="1000" loading="lazy" decoding="async"></div>
+      <figcaption><span>Home on desktop</span><span>screenshot</span></figcaption>
+    </figure>
+    <dl class="facts"><div><dt>Kind</dt><dd>Self-hosted media server</dd></div><div><dt>Runs on</dt><dd>Python 3.10+ · Docker (amd64, arm64)</dd></div><div><dt>License</dt><dd>MIT, open source</dd></div><div><dt>Status</dt><dd>Served</dd></div></dl>
+    <div class="code"><span class="k">Quick start</span><pre><code>pip install ownflick
+ownflick ~/Videos</code></pre></div>
+  </section>
+
+  <section class="wrap blk" aria-labelledby="f-h">
+    <p class="idx">(01) What it does</p>
+    <h2 class="h reveal" id="f-h">Small, and <em>on purpose.</em></h2>
+    <ul class="feats"><li class="reveal"><span class="n">01</span><h3>Flow</h3><p>A full-screen vertical feed of videos and images. Double-tap to favorite, hold for 2×, drag sideways to seek.</p></li><li class="reveal"><span class="n">02</span><h3>Library</h3><p>A year/month timeline for multi-year archives, plus an Explore grid of random images, latest videos and large files.</p></li><li class="reveal"><span class="n">03</span><h3>Radio</h3><p>An ambient audio player for the music sitting in the same folders.</p></li><li class="reveal"><span class="n">04</span><h3>Stays with you</h3><p>Browsing and playback stay on your server and work without internet. Optional AI features use the provider you configure.</p></li></ul>
+  </section>
+
+  <section class="wrap blk" aria-labelledby="ss-h" id="semantic-search">
+    <p class="idx">Semantic search</p>
+    <h2 class="h reveal" id="ss-h">Find related videos and search by description with EmbeddingGemma</h2>
+    <p class="sslede reveal">Turn on semantic search, then describe what you're looking for, or open any clip to find related videos in your own library. Runs with a self-hosted EmbeddingGemma, or a cloud embedding API if you prefer.</p>
+    <figure class="ssvid reveal">
+      <div class="vframe"><video src="/ownflick/ownflick-semantic-search.mp4" poster="/ownflick/ownflick-semantic-search-poster.webp" width="720" height="1280" muted loop playsinline autoplay preload="none" aria-label="Demo: opening a local clip in OwnFlick and getting related videos from the library with EmbeddingGemma"></video></div>
+      <figcaption><span>Semantic search demo</span><span>muted · loops</span></figcaption>
+    </figure>
+
+  </section>
+
+  <section class="wrap blk" aria-labelledby="q-h">
+    <p class="idx">(02) Questions</p>
+    <h2 class="h reveal" id="q-h">Asked, <em>answered.</em></h2>
+    <div class="faq"><details><summary>Is OwnFlick free?</summary><div class="a"><p>Yes. OwnFlick is free and open source under the MIT license.</p></div></details><details><summary>Does my media leave my machine?</summary><div class="a"><p>No. Browsing and playback stay on your own server, and local browsing works without internet access. Only optional AI features, which are off unless you configure them, send selected images to the provider you choose.</p></div></details><details><summary>How do I install it?</summary><div class="a"><p>With Python 3.10 or later, run <code>pip install ownflick</code>, then <code>ownflick ~/Videos</code>. A Docker image for amd64 and arm64 is also available at <code>ghcr.io/oddloafhq/ownflick</code>.</p></div></details><details><summary>Which file formats work?</summary><div class="a"><p>OwnFlick mixes videos and images in one feed, and plays whatever your browser can play. Files the browser can&#x27;t play, such as some HEVC or AV1 videos, are skipped with a short note instead of stopping the feed.</p></div></details><details><summary>Can I use it on my phone over LAN?</summary><div class="a"><p>Yes. Open <code>http://&lt;your-computer&gt;:8000</code> on any phone, tablet or browser on the same network. The first start prints an access password in the terminal.</p></div></details></div>
+    <nav class="next" aria-label="Next batch"><small>Next batch — 04</small><a href="/qrhop/"><span>QRHop →</span></a></nav>
+  </section>
+</main>
+
+<footer id="hello">
+  <p class="hello"><small>(03) Say hello <span class="hint"></span><span class="copied" role="status" aria-live="polite"></span></small><a id="mail" href="mailto:hello@oddloaf.dev">hello@oddloaf.dev</a></p>
+  <nav class="links" aria-label="Elsewhere"><a href="https://x.com/oddloafhq" target="_blank" rel="noopener">X ↗</a><a href="https://github.com/oddloafhq" target="_blank" rel="noopener">GitHub ↗</a></nav>
+  <div class="base"><span>© 2026 Oddloaf</span><a href="#top">Back to top ↑</a></div>
+</footer>
+
+<div class="grain" aria-hidden="true"></div>
+<script>
+(()=>{
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  const f=document.querySelector('.faq details'); if(f) f.open=true;
+  /* ---------- email: click to copy, mailto as fallback ---------- */
+  const mail=document.getElementById('mail'), copied=document.querySelector('.copied');
+  const canCopy=!!(navigator.clipboard && window.isSecureContext);
+  document.querySelector('.hint').textContent = canCopy ? (matchMedia('(hover: none)').matches ? '— tap to copy' : '— click to copy') : '';
+  mail.addEventListener('click',e=>{
+    if(!canCopy) return;      // let mailto: do its thing
+    e.preventDefault();
+    navigator.clipboard.writeText('hello@oddloaf.dev').then(()=>{
+      copied.textContent='copied ✓'; copied.classList.add('on');
+      clearTimeout(mail._t); mail._t=setTimeout(()=>copied.classList.remove('on'),1800);
+    }).catch(()=>{ location.href=mail.href; });
+  });
+})();
+</script>
+</body>
+</html>

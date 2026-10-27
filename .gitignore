@@ -1,0 +1,10 @@
+.wcache/
+*.log
+.DS_Store
+dist-backup*/
+dist-restore/
+dist-shots/
+shots/
+shots-products/
+*-preview/
+*.bak*

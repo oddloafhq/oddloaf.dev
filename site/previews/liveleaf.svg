@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="#141414"/>
+<g fill="none" stroke="#F4F1EA">
+<rect x="290" y="40" width="220" height="460" rx="34" stroke-opacity=".75" stroke-width="2.5"/>
+<rect x="362" y="56" width="76" height="18" rx="9" fill="#F4F1EA" fill-opacity=".85" stroke="none"/>
+<rect x="312" y="96" width="176" height="110" rx="10" fill="#F4F1EA" fill-opacity=".1" stroke-opacity=".3"/>
+<circle cx="400" cy="151" r="26" stroke-opacity=".6" stroke-width="2"/>
+<path d="M386 151c8-14 22-18 30-16-2 10-10 24-30 16z" fill="#F4F1EA" fill-opacity=".75" stroke="none"/>
+<g stroke-opacity=".3" stroke-width="7" stroke-linecap="round"><path d="M318 236h150M318 260h120M318 284h160"/></g>
+<g stroke-opacity=".5" stroke-width="2"><rect x="312" y="318" width="80" height="80" rx="8"/><rect x="408" y="318" width="80" height="80" rx="8" fill="#F4F1EA" fill-opacity=".14"/></g>
+<g stroke-opacity=".18" stroke-width="7" stroke-linecap="round"><path d="M318 430h140M318 454h100"/></g>
+</g>
+<g font-family="ui-monospace,Menlo,monospace" font-size="16" fill="#F4F1EA" fill-opacity=".35"><text x="560" y="200">index.html</text><text x="560" y="226">offline ✓</text></g>
+<path d="M548 194h-30" stroke="#F4F1EA" stroke-opacity=".25"/>
+</svg>
