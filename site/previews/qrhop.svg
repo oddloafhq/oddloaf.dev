@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="#141414"/>
+<g fill="none" stroke="#F4F1EA">
+<path d="M0 46h800" stroke-opacity=".18"/>
+<g fill="#F4F1EA" stroke="none" fill-opacity=".55"><circle cx="560" cy="23" r="5"/><rect x="590" y="17" width="34" height="12" rx="3" fill-opacity=".25"/><rect x="640" y="17" width="60" height="12" rx="3" fill-opacity=".25"/></g>
+<path d="M552 52l8-8 8 8" stroke-opacity=".5"/>
+<rect x="420" y="60" width="280" height="300" rx="14" fill="#1d1d1d" stroke-opacity=".5" stroke-width="1.5"/>
+<rect x="470" y="96" width="180" height="180" fill="#F4F1EA" fill-opacity=".92" stroke="none"/>
+</g>
+<g fill="#141414">
+<rect x="484" y="110" width="44" height="44"/><rect x="492" y="118" width="28" height="28" fill="#F4F1EA"/><rect x="498" y="124" width="16" height="16"/>
+<rect x="592" y="110" width="44" height="44"/><rect x="600" y="118" width="28" height="28" fill="#F4F1EA"/><rect x="606" y="124" width="16" height="16"/>
+<rect x="484" y="218" width="44" height="44"/><rect x="492" y="226" width="28" height="28" fill="#F4F1EA"/><rect x="498" y="232" width="16" height="16"/>
+<rect x="540" y="112" width="8" height="8"/><rect x="556" y="120" width="8" height="16"/><rect x="572" y="112" width="8" height="8"/><rect x="540" y="144" width="16" height="8"/>
+<rect x="540" y="168" width="8" height="8"/><rect x="556" y="168" width="24" height="8"/><rect x="588" y="168" width="8" height="16"/><rect x="604" y="176" width="16" height="8"/><rect x="628" y="168" width="8" height="8"/>
+<rect x="484" y="168" width="8" height="16"/><rect x="500" y="184" width="16" height="8"/><rect x="524" y="176" width="8" height="8"/>
+<rect x="548" y="192" width="8" height="24"/><rect x="564" y="200" width="16" height="8"/><rect x="588" y="200" width="8" height="8"/><rect x="604" y="208" width="24" height="8"/>
+<rect x="540" y="232" width="16" height="8"/><rect x="564" y="224" width="8" height="24"/><rect x="580" y="240" width="16" height="8"/><rect x="604" y="228" width="8" height="8"/><rect x="620" y="240" width="16" height="16"/><rect x="548" y="252" width="8" height="8"/><rect x="596" y="252" width="8" height="8"/>
+</g>
+<g font-family="ui-monospace,Menlo,monospace" font-size="16" fill="#F4F1EA">
+<text x="560" y="312" text-anchor="middle" fill-opacity=".55">qrhop.app</text>
+<text x="560" y="340" text-anchor="middle" fill-opacity=".3">esc to close</text>
+<text x="100" y="230" fill-opacity=".35">copy</text><text x="100" y="262" fill-opacity=".7">⇧⌘2</text><text x="100" y="294" fill-opacity=".35">scan</text>
+</g>
+<path d="M190 256h200" stroke="#F4F1EA" stroke-opacity=".25" stroke-dasharray="4 7"/>
+<rect x="150" y="410" width="120" height="160" rx="18" fill="none" stroke="#F4F1EA" stroke-opacity=".35" stroke-width="2" transform="rotate(-8 210 490)"/>
+</svg>

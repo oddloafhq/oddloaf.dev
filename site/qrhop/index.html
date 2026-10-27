@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>QRHop – Turn your Mac clipboard into a QR code, from the menu bar</title>
+<meta name="description" content="Copy a link or text on your Mac, scan the QR in your menu bar, and it&#x27;s on your phone. No account, no cloud, works with any phone.">
+<link rel="canonical" href="https://oddloaf.dev/qrhop/">
+<meta name="theme-color" content="#F4F1EA">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Oddloaf">
+<meta property="og:url" content="https://oddloaf.dev/qrhop/">
+<meta property="og:title" content="QRHop – Turn your Mac clipboard into a QR code, from the menu bar">
+<meta property="og:description" content="Copy a link or text on your Mac, scan the QR in your menu bar, and it&#x27;s on your phone. No account, no cloud, works with any phone.">
+<meta property="og:image" content="https://oddloaf.dev/og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@oddloafhq">
+<meta name="twitter:title" content="QRHop – Turn your Mac clipboard into a QR code, from the menu bar">
+<meta name="twitter:description" content="Copy a link or text on your Mac, scan the QR in your menu bar, and it&#x27;s on your phone. No account, no cloud, works with any phone.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/geist-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "QRHop", "description": "Copy a link or text on your Mac, scan the QR in your menu bar, and it's on your phone. No account, no cloud, works with any phone.", "applicationCategory": "UtilitiesApplication", "operatingSystem": "macOS 13 or later", "url": "https://qrhop.app", "mainEntityOfPage": "https://oddloaf.dev/qrhop/", "image": "https://oddloaf.dev/og.png", "publisher": {"@type": "Organization", "name": "Oddloaf", "url": "https://oddloaf.dev/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Does it work with Android?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Any phone camera can scan the code, Android or iPhone, with no companion app, pairing or shared network."}}, {"@type": "Question", "name": "Is anything uploaded?", "acceptedAnswer": {"@type": "Answer", "text": "No. QRHop processes your clipboard locally and makes the QR code in memory. There are no uploads, accounts, analytics or tracking."}}, {"@type": "Question", "name": "What can I share?", "acceptedAnswer": {"@type": "Answer", "text": "Any text on your clipboard: a link, an address, a short note, a command."}}, {"@type": "Question", "name": "When will it be on the Mac App Store?", "acceptedAnswer": {"@type": "Answer", "text": "QRHop is being prepared for its first Mac App Store release. There is no date yet."}}]}</script>
+<style>
+@font-face{font-family:"Instrument Serif";src:url("/fonts/instrument-serif-latin-400-normal.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Instrument Serif";src:url("/fonts/instrument-serif-latin-400-italic.woff2") format("woff2");font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:"Geist Mono";src:url("/fonts/geist-mono-latin-400-normal.woff2") format("woff2");font-weight:400;font-display:swap}
+:root{--paper:#F4F1EA;--ink:#141414;--mid:#6a6761;--soft:#4a4844;--line:rgba(20,20,20,.07);--rule:rgba(20,20,20,.16);
+  --serif:"Instrument Serif","Cormorant Garamond","Didot","Times New Roman",serif;--mono:"Geist Mono","SF Mono",ui-monospace,Menlo,Consolas,monospace;--pad:clamp(20px,3.2vw,48px)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;scroll-behavior:smooth}
+body{position:relative;background:var(--paper);font-family:var(--mono);font-size:12.5px;letter-spacing:.01em;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--ink);color:var(--paper)}
+:focus-visible{outline:1px solid currentColor;outline-offset:4px}
+.guides{position:fixed;inset:0 var(--pad);pointer-events:none;z-index:0;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.guides::before{content:"";position:absolute;top:0;bottom:0;left:calc(100%/12*2);border-left:1px solid var(--line)}
+.grain{position:absolute;inset:0;pointer-events:none;z-index:5;opacity:.045;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 9s steps(6) infinite}
+@keyframes grain{0%,100%{background-position:0 0}20%{background-position:-41px 27px}40%{background-position:33px -52px}60%{background-position:-19px -13px}80%{background-position:47px 38px}}
+header,main,footer{position:relative;z-index:2}
+header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:var(--pad);z-index:6;mix-blend-mode:difference;color:var(--paper)}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:24px;line-height:1;letter-spacing:-.01em}
+.brand svg{width:28px;height:20px;display:block;transform:translateY(-1px)}
+header nav{display:flex;gap:26px;text-transform:uppercase;letter-spacing:.08em;font-size:11.5px}
+header nav a{position:relative}
+header nav a::after{content:"";position:absolute;left:0;right:100%;bottom:-4px;height:1px;background:currentColor;transition:right .9s cubic-bezier(.2,.7,0,1)}
+header nav a:hover::after{right:0}
+
+.wrap{display:grid;grid-template-columns:repeat(12,1fr);padding:0 var(--pad)}
+.intro{padding-top:calc(var(--pad) + 17vh);padding-bottom:7vh;row-gap:0}
+.crumb{grid-column:1/3;color:var(--mid);padding-top:14px}
+.crumb a{border-bottom:1px solid var(--rule)}
+.crumb a:hover{border-color:var(--ink)}
+h1.pname{grid-column:3/13;font-family:var(--serif);font-weight:400;font-size:clamp(72px,13vw,210px);line-height:.86;letter-spacing:-.035em}
+h1.pname em{font-style:italic}
+.tag{grid-column:3/10;margin-top:28px;font-family:var(--serif);font-size:clamp(22px,2.3vw,34px);line-height:1.2;color:#2a2a28}
+.cta{grid-column:3/13;margin-top:34px;display:flex;flex-wrap:wrap;gap:14px 34px;align-items:baseline}
+.cta .go{font-size:13px;color:var(--ink);padding-bottom:3px;background:linear-gradient(currentColor,currentColor) 0 100%/100% 1px no-repeat;transition:background-size .9s cubic-bezier(.2,.7,0,1)}
+.cta .go:hover{background-size:0 1px;background-position:100% 100%}
+.state{text-transform:uppercase;letter-spacing:.08em;font-size:11.5px}
+.state i{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:8px;vertical-align:1px;border:1px solid var(--ink)}
+.state.on i{background:var(--ink)}
+.state.soon i{background:linear-gradient(90deg,var(--ink) 50%,transparent 50%)}
+.snote{color:var(--mid)}
+
+.shot{grid-column:1/13;margin:0;padding-bottom:3vh}
+.shot .frame{position:relative;aspect-ratio:16/9;background:#141414;overflow:hidden}
+.shot img{display:block;width:100%;height:100%;object-fit:contain;filter:grayscale(1) contrast(1.04)}
+.shot figcaption{margin-top:10px;color:var(--mid);display:flex;justify-content:space-between}
+
+.facts{grid-column:1/13;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ink);margin-top:6vh}
+.facts div{padding:16px 18px 18px 0;border-bottom:1px solid var(--rule)}
+.facts dt{color:var(--mid);margin-bottom:6px}
+.facts dd{color:var(--ink)}
+.code{grid-column:1/13;margin-top:4vh;display:flex;gap:24px;align-items:baseline}
+.code .k{color:var(--mid);min-width:calc((100% - 0px)/12*2)}
+.code pre{font:inherit;font-size:13px;line-height:1.8;color:var(--ink);white-space:pre-wrap}
+
+section.blk{padding-top:11vh}
+.idx{grid-column:1/3;color:var(--mid);padding-top:8px}
+h2.h{grid-column:3/13;font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.4vw,50px);line-height:1.05;letter-spacing:-.01em;margin-bottom:5vh}
+h2.h em{font-style:italic}
+.feats{grid-column:1/13;list-style:none;display:grid;grid-template-columns:repeat(4,1fr);column-gap:28px;border-top:1px solid var(--ink)}
+.feats li{padding:22px 0 8px}
+.feats .n{color:var(--mid);display:block;margin-bottom:22px}
+.feats h3{font-family:var(--serif);font-weight:400;font-size:clamp(22px,1.9vw,28px);line-height:1.1;margin-bottom:12px}
+.feats p{color:var(--soft);max-width:34ch}
+
+.faq{grid-column:3/13;border-top:1px solid var(--ink)}
+.faq details{border-bottom:1px solid var(--rule)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:24px;align-items:baseline;padding:20px 0;font-family:var(--serif);font-size:clamp(20px,1.8vw,26px);line-height:1.2}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--mono);font-size:14px;color:var(--mid);transition:transform .5s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq .a{padding:0 0 22px;color:var(--soft);max-width:68ch}
+.faq .a code{font:inherit;color:var(--ink);background:rgba(20,20,20,.06);padding:1px 5px}
+
+.next{grid-column:1/13;margin-top:13vh;padding:28px 0;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:baseline;gap:20px}
+.next a{font-family:var(--serif);font-size:clamp(28px,3vw,44px);line-height:1}
+.next a span{transition:transform 1s cubic-bezier(.2,.7,0,1);display:inline-block}
+.next a:hover span{transform:translateX(12px)}
+.next small{color:var(--mid)}
+
+footer{display:grid;grid-template-columns:repeat(12,1fr);align-items:end;padding:6.5vh var(--pad) var(--pad);border-top:1px solid var(--line);color:var(--mid);row-gap:28px}
+footer .hello{grid-column:1/9;font-family:var(--serif);color:var(--ink);font-size:clamp(34px,5vw,76px);line-height:1;letter-spacing:-.02em}
+footer .hello small{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.01em;color:var(--mid);margin-bottom:16px}
+footer .hello small .copied{color:var(--ink);opacity:0;transition:opacity .4s;margin-left:8px}
+footer .hello small .copied.on{opacity:1}
+footer .hello a{font-style:italic;background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size 1s cubic-bezier(.2,.7,0,1);cursor:copy}
+footer .hello a:hover{background-size:100% 1px}
+footer .links{grid-column:9/13;display:flex;justify-content:flex-end;gap:24px;color:var(--ink)}
+footer .links a{opacity:.75;transition:opacity .5s}
+footer .links a:hover{opacity:1}
+footer .base{grid-column:1/13;display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:var(--pad)}
+
+.reveal{opacity:0;transform:translateY(14px);transition:opacity 1.4s ease,transform 1.4s cubic-bezier(.2,.7,0,1)}
+.reveal.in{opacity:1;transform:none}
+@media (max-width:760px){
+  body{font-size:13px}
+  .guides::before{display:none}
+  header nav{gap:16px}
+  .brand{font-size:22px}
+  .wrap{grid-template-columns:repeat(4,1fr)}
+  .intro{padding-top:calc(var(--pad) + 74px);padding-bottom:5vh}
+  .crumb{grid-column:1/5;padding:0 0 18px}
+  h1.pname{grid-column:1/5;font-size:clamp(56px,19vw,96px)}
+  .tag{grid-column:1/5;margin-top:18px;font-size:22px}
+  .cta{grid-column:1/5;margin-top:24px;flex-direction:column;gap:10px}
+  .shot{grid-column:1/5}
+  .shot .frame{aspect-ratio:4/3}
+  .facts{grid-column:1/5;grid-template-columns:1fr 1fr;margin-top:4vh}
+  .code{grid-column:1/5;flex-direction:column;gap:8px}
+  section.blk{padding-top:8vh}
+  .idx{grid-column:1/5;margin-bottom:12px}
+  h2.h{grid-column:1/5;margin-bottom:4vh}
+  .feats{grid-column:1/5;grid-template-columns:1fr}
+  .feats li{border-bottom:1px solid var(--rule);padding:18px 0}
+  .feats .n{margin-bottom:8px}
+  .faq{grid-column:1/5}
+  .next{grid-column:1/5;flex-direction:column;margin-top:9vh}
+  footer{grid-template-columns:repeat(4,1fr)}
+  footer .hello{grid-column:1/5;font-size:11vw}
+  footer .links{grid-column:1/5;justify-content:flex-start}
+  footer .base{grid-column:1/5}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <mask id="cuts" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <rect width="512" height="512" fill="#fff"/>
+      <g transform="translate(256 256) scale(1.14) translate(-256 -258)" fill="#000">
+        <path d="M226,135 L250,135 C204,185 175.2,219 156.2,253 C143.2,223 174,181 226,135 Z"/>
+        <path d="M296,128 L320,128 C274,178 245.2,212 226.2,246 C213.2,216 244,174 296,128 Z"/>
+        <path d="M366,138 L390,138 C344,188 315.2,222 296.2,256 C283.2,226 314,184 366,138 Z"/>
+      </g>
+    </mask>
+    <symbol id="loaf" viewBox="40 130 432 250">
+      <g mask="url(#cuts)"><g transform="translate(256 256) scale(1.14) translate(-256 -258)"><path fill="currentColor" d="M156,352 C100,352 78,326 78,286 C78,218 150,172 238,164 C324,156 402,182 426,240 C442,280 440,326 418,342 C404,352 384,352 362,352 Z"/></g></g>
+    </symbol>
+  </defs>
+</svg>
+<div class="guides" aria-hidden="true"></div>
+<header>
+  <a class="brand" href="/" aria-label="Oddloaf, home"><svg aria-hidden="true"><use href="#loaf"/></svg><span>Oddloaf</span></a>
+  <nav aria-label="Site"><a href="/#batches">Batches</a><a href="/#about">About</a><a href="#hello">Hello</a></nav>
+</header>
+
+<main id="top">
+  <section class="wrap intro" aria-labelledby="pn">
+    <p class="crumb"><a href="/#batches">Batches</a> / 04</p>
+    <h1 class="pname" id="pn">QRHop</h1>
+    <p class="tag">Copy on your Mac, press a shortcut, scan with your phone. That’s the whole trick.</p>
+    <div class="cta">
+      <a class="go" href="https://qrhop.app" target="_blank" rel="noopener">qrhop.app ↗</a>
+      <span class="state soon"><i></i>Cooling — soon</span>
+      <span class="snote">Being prepared for its first Mac App Store release.</span>
+    </div>
+  </section>
+
+  <section class="wrap" aria-label="Preview">
+    <!-- Screenshot slot: replace src with a real screenshot (.png/.jpg/.webp). It is shown in grayscale. -->
+    <figure class="shot reveal" data-shot="/previews/qrhop.svg">
+      <div class="frame"><img src="/previews/qrhop.svg" alt="QRHop preview" width="1600" height="900" decoding="async"></div>
+      <figcaption><span>QRHop — preview</span><span>placeholder</span></figcaption>
+    </figure>
+    <dl class="facts"><div><dt>Platform</dt><dd>macOS menu bar</dd></div><div><dt>Requires</dt><dd>macOS 13 or later</dd></div><div><dt>Default shortcut</dt><dd>⇧⌘2</dd></div><div><dt>Status</dt><dd>Coming soon to the Mac App Store</dd></div></dl>
+    
+  </section>
+
+  <section class="wrap blk" aria-labelledby="f-h">
+    <p class="idx">(01) What it does</p>
+    <h2 class="h reveal" id="f-h">Small, and <em>on purpose.</em></h2>
+    <ul class="feats"><li class="reveal"><span class="n">01</span><h3>One shortcut</h3><p>Use the default ⇧⌘2 or record your own, with built-in checks for unsafe and conflicting combinations.</p></li><li class="reveal"><span class="n">02</span><h3>Crisp to scan</h3><p>Every code is rendered sharply with a standard quiet zone. Copy the image or save it as a PNG.</p></li><li class="reveal"><span class="n">03</span><h3>Only there when needed</h3><p>No Dock icon, no main window. Close the panel with Esc, the shortcut, or a click outside.</p></li><li class="reveal"><span class="n">04</span><h3>Stays on your Mac</h3><p>Clipboard content is turned into a QR code locally, in memory. No uploads, accounts, analytics or tracking.</p></li></ul>
+  </section>
+
+  <section class="wrap blk" aria-labelledby="q-h">
+    <p class="idx">(02) Questions</p>
+    <h2 class="h reveal" id="q-h">Asked, <em>answered.</em></h2>
+    <div class="faq"><details><summary>Does it work with Android?</summary><div class="a"><p>Yes. Any phone camera can scan the code, Android or iPhone, with no companion app, pairing or shared network.</p></div></details><details><summary>Is anything uploaded?</summary><div class="a"><p>No. QRHop processes your clipboard locally and makes the QR code in memory. There are no uploads, accounts, analytics or tracking.</p></div></details><details><summary>What can I share?</summary><div class="a"><p>Any text on your clipboard: a link, an address, a short note, a command.</p></div></details><details><summary>When will it be on the Mac App Store?</summary><div class="a"><p>QRHop is being prepared for its first Mac App Store release. There is no date yet.</p></div></details></div>
+    <nav class="next" aria-label="Next batch"><small>Next batch — 01</small><a href="/nativediagram/"><span>NativeDiagram →</span></a></nav>
+  </section>
+</main>
+
+<footer id="hello">
+  <p class="hello"><small>(03) Say hello <span class="hint"></span><span class="copied" role="status" aria-live="polite"></span></small><a id="mail" href="mailto:hello@oddloaf.dev">hello@oddloaf.dev</a></p>
+  <nav class="links" aria-label="Elsewhere"><a href="https://x.com/oddloafhq" target="_blank" rel="noopener">X ↗</a><a href="https://github.com/oddloafhq" target="_blank" rel="noopener">GitHub ↗</a></nav>
+  <div class="base"><span>© 2026 Oddloaf</span><a href="#top">Back to top ↑</a></div>
+</footer>
+
+<div class="grain" aria-hidden="true"></div>
+<script>
+(()=>{
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  const f=document.querySelector('.faq details'); if(f) f.open=true;
+  /* ---------- email: click to copy, mailto as fallback ---------- */
+  const mail=document.getElementById('mail'), copied=document.querySelector('.copied');
+  const canCopy=!!(navigator.clipboard && window.isSecureContext);
+  document.querySelector('.hint').textContent = canCopy ? (matchMedia('(hover: none)').matches ? '— tap to copy' : '— click to copy') : '';
+  mail.addEventListener('click',e=>{
+    if(!canCopy) return;      // let mailto: do its thing
+    e.preventDefault();
+    navigator.clipboard.writeText('hello@oddloaf.dev').then(()=>{
+      copied.textContent='copied ✓'; copied.classList.add('on');
+      clearTimeout(mail._t); mail._t=setTimeout(()=>copied.classList.remove('on'),1800);
+    }).catch(()=>{ location.href=mail.href; });
+  });
+})();
+</script>
+</body>
+</html>

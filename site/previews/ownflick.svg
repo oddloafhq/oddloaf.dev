@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="#141414"/>
+<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4F1EA" stop-opacity=".05"/><stop offset="1" stop-color="#F4F1EA" stop-opacity=".22"/></linearGradient></defs>
+<g fill="none" stroke="#F4F1EA">
+<rect x="150" y="96" width="150" height="266" rx="10" stroke-opacity=".22" transform="rotate(-6 225 229)"/>
+<rect x="500" y="96" width="150" height="266" rx="10" stroke-opacity=".22" transform="rotate(6 575 229)"/>
+<rect x="315" y="56" width="170" height="302" rx="12" fill="url(#g)" stroke-opacity=".75" stroke-width="2.5"/>
+<path d="M388 186v40l34-20z" fill="#F4F1EA" fill-opacity=".85" stroke="none"/>
+<path d="M333 336h134" stroke-opacity=".3" stroke-width="3"/><path d="M333 336h52" stroke-opacity=".9" stroke-width="3"/>
+<circle cx="400" cy="466" r="54" stroke-opacity=".5" stroke-width="2"/>
+<circle cx="400" cy="466" r="12" stroke-opacity=".7" stroke-width="2"/>
+<path d="M400 412v-8M400 528v-8M346 466h8M446 466h8" stroke-opacity=".5" stroke-width="2"/>
+<path d="M454 466c60 0 110-24 150-70" stroke-opacity=".3" stroke-dasharray="4 7" stroke-width="2"/>
+</g>
+<text x="660" y="562" font-family="ui-monospace,Menlo,monospace" font-size="16" fill="#F4F1EA" fill-opacity=".35" text-anchor="end">~/Movies → feed</text>
+</svg>
